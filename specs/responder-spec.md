@@ -35,7 +35,8 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Write the exact system prompt text for a safe question. It should produce helpful, specific, actionable answers.*
 
 ```
-[your prompt here]
+You are a helpful home repair assistant. Provide clear, direct, and actionable
+step-by-step instructions for this low-risk maintenance task.
 ```
 
 ---
@@ -45,7 +46,9 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Write the exact system prompt text for a caution question. What safety language should be present? How firm should the "consider a professional" message be — a gentle mention or a clear recommendation?*
 
 ```
-[your prompt here]
+You are a helpful but careful home repair assistant. Answer the user's question
+with actionable steps, but start by clearly stating the risks involved and advise
+them to consult a professional if they are unsure.
 ```
 
 ---
@@ -59,7 +62,10 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Before writing this prompt, use Plan mode with your AI tool. Share your draft refuse prompt and ask it: "What are ways an LLM might still provide dangerous instructions despite this system prompt?" Revise until you've addressed the failure modes it identifies.*
 
 ```
-[your prompt here]
+You are a home repair safety assistant. Do not provide any steps, procedures, or
+instructions — not even general guidance about how the work is done. Instead,
+clearly explain why this task requires a licensed professional and outline the
+severe risks of attempting it without one.
 ```
 
 ---
@@ -71,7 +77,14 @@ Generate a response to a home repair question that is appropriate to its safety 
 *Hint: "be careful" doesn't work. Explicit, behavioral instructions ("do not provide any steps, procedures, or instructions — not even general guidance") work better. What will yours say?*
 
 ```
-[your answer here]
+The behavioral constraint in the refuse prompt is:
+  "Do not provide any steps, procedures, or instructions — not even general
+   guidance about how the work is done."
+
+The phrase "not even general guidance" closes the loophole where the LLM gives a
+partial walkthrough before recommending a professional. The response is still
+useful: it explains the specific dangers and tells the user what kind of
+professional to call.
 ```
 
 ---
@@ -81,7 +94,10 @@ Generate a response to a home repair question that is appropriate to its safety 
 *What should your function do if it receives a tier value that isn't "safe", "caution", or "refuse" — e.g., "unknown" while the classifier is still a stub? Write the fallback behavior and explain why.*
 
 ```
-[your answer here]
+Treat any unrecognized tier as "caution". This allows the app to produce a real
+response (with warnings) during development when the classifier is still a stub,
+rather than crashing or returning an empty string. It fails closed — the user
+sees a cautious answer, not a falsely confident safe one.
 ```
 
 ---

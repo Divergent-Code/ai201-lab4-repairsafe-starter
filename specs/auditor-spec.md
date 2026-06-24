@@ -43,8 +43,8 @@ Record every interaction — question, safety tier, and response preview — to 
 | `"tier"` | `str` | Safety tier assigned to this question |
 | `"question"` | `str` | The user's question, truncated to 300 characters |
 | `"response_preview"` | `str` | First 200 characters of the generated response |
-| `[your field]` | `[type]` | [description] |
-| `[your field]` | `[type]` | [description] |
+| `"model"` | `str` | LLM model name used for this interaction (from `config.LLM_MODEL`) |
+| `"response_length"` | `int` | Total character count of the full response |
 
 ---
 
@@ -53,7 +53,18 @@ Record every interaction — question, safety tier, and response preview — to 
 *The required fields truncate the question to 300 characters and the response to 200. Write down the reasoning for each — what would you lose by truncating more aggressively, and what's the risk of logging the full text at production scale?*
 
 ```
-[your answer here]
+300 chars for questions: Most repair questions fit comfortably within this limit.
+Truncating more (e.g., 100 chars) risks cutting off the key noun ("outlet" vs
+"panel") that determines which tier the question lands in — reducing the log's
+diagnostic value.
+
+200 chars for responses: Enough to confirm the response type (instructions vs.
+refusal) without logging the full potentially-long answer. At production scale,
+storing full responses for every interaction multiplies storage costs and may
+log PII if users embed personal details in their questions.
+
+response_length (full int) is logged separately so we can detect abnormally short
+or long responses without storing the full text.
 ```
 
 ---
@@ -63,7 +74,13 @@ Record every interaction — question, safety tier, and response preview — to 
 *What happens if `logs/` doesn't exist when the function runs for the first time? How will you handle that — and why is this worth thinking about at all?*
 
 ```
-[your answer here]
+Without the directory, open() raises FileNotFoundError and the interaction is
+silently lost. Use:
+  os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
+
+exist_ok=True means it's safe to call on every invocation — no need to check
+first. This matters because logs/ is git-ignored, so it won't exist in a fresh
+clone or a new environment.
 ```
 
 ---
@@ -73,7 +90,7 @@ Record every interaction — question, safety tier, and response preview — to 
 *Write an example of what you want the one-line terminal summary to look like after a question is logged. Be specific about format.*
 
 ```
-[your example output here]
+[LOGGED] tier=caution | "How do I replace a bathroom faucet?" -> 312 chars
 ```
 
 ---
