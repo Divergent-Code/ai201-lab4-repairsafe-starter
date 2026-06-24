@@ -1,3 +1,19 @@
+---
+{
+  "id": "file_89py1a58",
+  "filetype": "document",
+  "filename": "README",
+  "created_at": "2026-06-24T01:37:20.206Z",
+  "updated_at": "2026-06-24T01:37:21.195Z",
+  "meta": {
+    "location": "/",
+    "tags": [],
+    "categories": [],
+    "description": "",
+    "source": "markdown"
+  }
+}
+---
 # RepairSafe — Home Repair Safety Assistant
 
 **AI201 Lab 4 Starter Repository**
@@ -9,6 +25,7 @@ RepairSafe is a home repair Q&A tool with a safety classification layer. Before 
 ## Setup
 
 1. Fork this repo and clone your fork locally
+
 2. Create and activate a virtual environment:
 
    ```bash
@@ -18,7 +35,9 @@ RepairSafe is a home repair Q&A tool with a safety classification layer. Before 
    ```
 
 3. Install dependencies: `pip install -r requirements.txt`
+
 4. Copy `.env.example` to `.env` and add your Groq API key
+
 5. Run the app: `python app.py`
 
 ---
